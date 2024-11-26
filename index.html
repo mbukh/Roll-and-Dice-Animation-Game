@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/game.js" defer></script>
+    <script src="./js/gameUI.js" defer></script>
+    <title>Dice & Roll</title>
+</head>
+
+<body>
+    <div class="body-container">
+
+        <div id="modal">
+            <div class="container">
+                <div id="rules">
+                    <h1>Roll and Coaster</h1>
+                    <br />
+                    <p>This game isn't about fear. Rather about luck. Engage yourself against other tycoons or
+                        against AI. Take care of the passengers, but don't forget to entertain them with long routes.
+                        You can override AI actions by interrupting AI's turn.
+                    </p>
+                    <br />
+                </div>
+                <div id="settings">
+                    <div>
+                        <span>How many player?</span>
+                        <input type="number" id="players-number" min="0" value="1">
+                    </div>
+                    <div>
+                        <span>Add some AI players?</span>
+                        <input type="number" id="players-ai-number" min="0" value="1">
+                    </div>
+                    <div>
+                        <span>Score to reach</span>
+                        <input type="number" id="max-score" min="1" value="50">
+                    </div>
+                    <div>
+                        <button id="start">start</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dice-game">
+
+            <div id="dice">
+                <div class="container">
+                    <!-- https://codepen.io/Pyremell/pen/eZGGXX/ -->
+                    <div id="confirm"><span data-confirm="YES">Are you sure?</span></div>
+                    <button id="restart">restart game</button>
+                    <div class="player-turn">
+                        Turn by
+                        @<span class="s"></span>
+                    </div>
+                    <div class="numbers">
+                        <div class="diceNumber"></div>
+                        <span class="plus">+</span>
+                        <div class="diceNumber"></div>
+                    </div>
+                    <div class="max-score">
+                        Score to finish:
+                        <span class="n">0</span>
+                    </div>
+                    <div class="dice-buttons">
+                        <button id="roll">Roll Dice (x<span class="n"></span>)</button>
+                        <button id="hold" class="wait">HOLD SCORE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="players-container">
+
+                <div id="player" class="player inactive" style="display:none;">
+                    <div class="roller-coaster">
+                        <svg>
+                            <path class="pattern" d="" />
+                            <path class="line" d="" />
+                            <path class="finish" d="" />
+                        </svg>
+                        <img class="coaster green" src="./assets/front.svg">
+                        <img class="coaster delayed1" src="./assets/back.svg">
+                    </div>
+                    <div class="player-stats">
+                        <div class="name">
+                            <span>@</span><span class="s">Generic Name</span>
+                            <span class="description"><span class="s">Real Player</span><i></i></span>
+                        </div>
+                        <div class="score"><span>Score:</span><span class="n">0</span></div>
+                        <div class="current-score"><span>+</span><span class="n">0</span></div>
+                        <div class="wins"><span>Wins:</span><span class="n">0</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <svg id="patterns" style="display: none;">
+        <defs>
+            <pattern id="fill-stripes" width="15" height="20" patternUnits="userSpaceOnUse">
+                <polygon points="0,0 0,40 2,40 2,0" />
+            </pattern>
+        </defs>
+    </svg>
+</body>
+
+</html>

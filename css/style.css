@@ -1,0 +1,596 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+:root {
+    /* https://lospec.com/palette-list/alexnompes-dragon-45 */
+
+    --color1: #fffdf7;
+    --color2: #fff6db;
+    --color3: #f7e3ba;
+    --color4: #e8b884;
+    --color5: #e39562;
+    --color6: #d67149;
+    --color7: #c75038;
+    --color8: #ba2929;
+    --color9: #a10d32;
+    --color10: #870034;
+    --color11: #540332;
+    --color12: #33002b;
+    --color13: #5e003c;
+    --color14: #700c6a;
+    --color15: #6b188c;
+    --color16: #642abd;
+    --color17: #493fcc;
+    --color18: #527fd9;
+    --color19: #5faae3;
+    --color20: #85dcf2;
+    --color21: #c2fcfb;
+    --color22: #f4fae0;
+    --color23: #f5eca9;
+    --color24: #e8e882;
+    --color25: #cbd964;
+    --color26: #a3c449;
+    --color27: #599419;
+    --color28: #34700a;
+    --color29: #215903;
+    --color30: #113300;
+    --color31: #0d4726;
+    --color32: #195938;
+    --color33: #227843;
+    --color34: #299e4c;
+    --color35: #4bbd79;
+    --color36: #6fd6a3;
+    --color37: #a1f0d1;
+    --color38: #ffffff;
+    --color39: #d4d4d4;
+    --color40: #a0a0a0;
+    --color41: #6c6c6c;
+    --color42: #383838;
+    --color43: #272727;
+    --color44: #161616;
+    --color45: #090909;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: "Press Start 2P", cursive;
+    color: var(--color2);
+    font-size: min(16px, min(3vw, 3vh));
+    overflow: hidden;
+}
+.body-container {
+    width: 100%;
+    height: 100%;
+    background: var(--color45);
+    display: flex;
+}
+p {
+    line-height: 2em;
+}
+/* ============= */
+/* ============= */
+/*     MODAL     */
+/* ============= */
+
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color44);
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+#modal .container {
+    width: clamp(400px, 80vw, 100%);
+    height: clamp(300px, 80vh, 100%);
+    gap: min(5vh, 40px);
+    margin-inline: 0.5em;
+}
+#modal #rules {
+    display: block;
+}
+#modal #settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 1em;
+}
+#modal #settings > * {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+#modal #settings > :last-child {
+    flex-direction: row-reverse;
+}
+#modal input,
+#modal button {
+    font-family: inherit;
+    font-size: 2em;
+    text-align: center;
+    outline: none;
+    border: none;
+    background-color: var(--color43);
+    color: var(--color1);
+    width: 120px;
+    height: min(15vh, 80px);
+    cursor: pointer;
+}
+#modal button {
+    padding: 10px;
+    width: fit-content;
+}
+
+/* ============== */
+/* ============== */
+/*      GAME      */
+/* ============== */
+
+#dice-game {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+#dice-game #players-container {
+    width: 100%;
+    display: flex;
+    font-size: 80%;
+}
+#dice-game #players-container .player {
+    --player-color: var(--color07);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+#dice-game #players-container .player.inactive {
+    opacity: 0.2;
+}
+#dice-game #players-container .roller-coaster {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    flex: 5;
+}
+#dice-game #players-container .player-stats {
+    font-size: min(min(5vw, 5vh), 2em);
+    flex: 2;
+    padding-block: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    position: relative;
+    background: var(--color43);
+    border-radius: 1rem;
+}
+#dice-game #players-container .player.inactive .player-stats {
+    background: var(--color45);
+}
+#dice-game #players-container .player-stats > * {
+    padding-inline-end: 20px;
+}
+
+/* ================== */
+/* ================== */
+/*       Player       */
+/* ================== */
+
+.player-stats .name {
+    color: var(--color18);
+    text-decoration: dashed;
+    flex: 1;
+    position: relative;
+}
+.player-stats .name::after {
+    content: "i";
+    position: absolute;
+    right: 0;
+    top: -0.7em;
+    display: block;
+    font-size: 60%;
+    padding: 0.1em;
+    color: var(--color2);
+}
+.player.inactive .player-stats .name {
+    color: var(--color1);
+}
+/* http://www.menucool.com/tooltip/css-tooltip */
+.player-stats .name .description {
+    display: inline-block;
+    position: absolute;
+    z-index: 20;
+    top: -1em;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    font-size: 0.6em;
+    font-weight: 200;
+    color: var(--color42);
+    background: var(--color22);
+    min-width: 200px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    display: none;
+}
+.player-stats .name:hover .description {
+    display: block;
+}
+.player-stats .name .description i {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -12px;
+    width: 24px;
+    height: 12px;
+    overflow: hidden;
+}
+.player-stats .name .description i::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background-color: #eeeeee;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.player-stats .current-score {
+    flex: 1;
+    padding-block: 0.5em;
+}
+.player-stats .current-score.clear {
+    opacity: 0;
+    animation: blinker 0.25s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+}
+.player-stats .score {
+    flex: 1;
+}
+.player-stats .wins {
+    flex: 1;
+}
+.player-stats .wins.update {
+    opacity: 0;
+    animation: blinker 0.25s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+}
+
+/* ================ */
+/* ================ */
+/*       Dice       */
+/* ================ */
+
+#dice {
+    position: fixed;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    background-color: #f4fae0aa;
+    box-shadow: 0px 0px 10px var(--color42);
+    border-radius: 0.5em;
+    backdrop-filter: blur(6px);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    opacity: 0.3;
+    transition: opacity 0.2s ease-in-out;
+    color: var(--color42);
+    cursor: move;
+}
+#dice.hide,
+#dice.hide:hover {
+    opacity: 0;
+    z-index: -10;
+    transition: opacity 0.5s linear;
+}
+#dice:hover {
+    opacity: 1;
+}
+#dice .container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#dice .numbers {
+    padding: 10px 30px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+    gap: 30px;
+}
+#dice .diceNumber {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: min(100px, min(15vw, 15vh));
+    width: min(100px, min(15vw, 15vh));
+    padding: 8px 0 0 8px;
+    border: 1px solid var(--color44);
+    border-radius: 10px;
+    font-size: min(min(10vw, 10vh), 80px);
+    color: var(--color1);
+    text-shadow: 1px 1px 2px var(--color43);
+}
+#dice .max-score,
+#dice .player-turn {
+    font-size: 80%;
+    padding: 20px;
+}
+#dice .dice-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1px;
+}
+#dice button {
+    background-color: var(--color38);
+    border-radius: 0.5em;
+    border: none;
+    color: var(--color43);
+    font-weight: 600;
+    padding: 10px;
+    text-transform: uppercase;
+    width: 100%;
+    cursor: pointer;
+    opacity: 1;
+    white-space: nowrap;
+}
+#dice button:hover {
+    opacity: 0.6;
+}
+#dice button.wait,
+#dice button.wait:hover {
+    opacity: 0.1;
+    cursor: not-allowed;
+}
+#dice #confirm {
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    transform: translateY(-100%);
+    transition: height 0.3s cubic-bezier(0.75, 0.25, 0.25, 1);
+    font-size: 60%;
+    color: var(--color2);
+}
+#dice #confirm.activated {
+    height: 30px;
+}
+#dice #confirm span {
+    display: inline-block;
+    background-color: var(--color42);
+    width: 220px;
+    height: 30px;
+    padding-top: 10px;
+    border-radius: 6px 6px 0 0;
+}
+#dice #confirm.activated span:hover::after {
+    content: attr(data-confirm);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    z-index: 2;
+    display: inline-block;
+    background-color: var(--color42);
+    width: 220px;
+    height: 30px;
+    padding-top: 10px;
+    border-radius: 0.5em 0.5em 0 0;
+    color: var(--color7);
+    cursor: pointer;
+}
+#dice #restart {
+    padding: 0;
+    height: 20px;
+    font-size: 80%;
+}
+#dice #restart:hover {
+    opacity: 0.8;
+    color: var(--color2);
+    background: var(--color7);
+}
+#dice #confirm:hover ~ #restart {
+    opacity: 1;
+    color: var(--color2);
+    background: var(--color7);
+}
+#dice #roll {
+    border-radius: 0.5em 0 0 0.5em;
+    background-color: var(--color37);
+    flex: 2;
+}
+#dice #hold {
+    border-radius: 0 0.5em 0.5em 0;
+    background-color: var(--color2);
+    flex: 1;
+}
+
+/* ================== */
+/* ================== */
+/* SVG path generator */
+/* https://stackoverflow.com/questions/68512066/creating-random-svg-curves-in-javascript-while-avoiding-sharp-turns */
+/* ================== */
+
+.roller-coaster svg {
+    position: absolute;
+    stroke: rgba(102, 102, 102, 0.2);
+    border-radius: 1rem;
+    background-color: var(--player-color);
+    filter: blur(1rem);
+    animation-name: blur;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 0.25rem;
+    fill: none;
+}
+.roller-coaster img {
+    filter: drop-shadow(0px 0px 1px white) drop-shadow(0px 0px 1px white)
+        drop-shadow(0px 0px 1px white) drop-shadow(0px 0px 1px white);
+}
+.roller-coaster img.green {
+    filter: invert(48%) sepia(79%) saturate(2400%) hue-rotate(16deg)
+        brightness(118%) contrast(119%) drop-shadow(0px 0px 1px white)
+        drop-shadow(0px 0px 1px white) drop-shadow(0px 0px 1px white)
+        drop-shadow(0px 0px 1px white);
+}
+@keyframes blur {
+    100% {
+        filter: blur(0rem);
+    }
+}
+.roller-coaster svg path {
+    --dash-start: 20000000;
+    --dash-end: 0;
+    --stroke: none;
+    filter: drop-shadow(3px 3px 2px rgb(0 0 0 / 0.4));
+    stroke: var(--stroke);
+    fill: none;
+    animation: grow 5000s cubic-bezier(0.75, 0.25, 0.25, 1) forwards;
+    stroke-dasharray: var(--dash-start);
+    stroke-dashoffset: var(--dash-start);
+}
+.roller-coaster svg path.pattern {
+    /* https://philiprogers.com/svgpatterns/#verticalstripes */
+    /* http://iros.github.io/patternfills/sample_svg.html */
+    /* fill: url("#patterns #fill-stripes"); */
+    fill: var(--color2);
+}
+.roller-coaster svg path.line {
+    --stroke: #00ffbfbf;
+}
+.roller-coaster svg path.finish {
+    --stroke: #ff4800bf;
+    --dash-start: 0;
+    animation: blinker 0.6s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+    animation-play-state: paused;
+    opacity: 0;
+}
+@keyframes grow {
+    from {
+        stroke-dashoffset: var(--dash-start);
+    }
+    to {
+        stroke-dashoffset: var(--dash-end);
+    }
+}
+@keyframes blinker {
+    to {
+        opacity: 1;
+    }
+}
+
+/* ============ */
+/* ============ */
+/* Moving parts */
+/* ============ */
+
+.coaster {
+    --size: 25px;
+    --gap: 15px;
+    --length: calc(3 * (var(--size) + var(--gap)));
+    --place: 0;
+    --offset: calc(var(--place) * (var(--size) + var(--gap)));
+    --old-progress: 0; /* changes inline by JS */
+
+    --progress: 0; /* changes inline by JS */
+
+    --animate-from: calc(var(--old-progress) - var(--offset));
+    --animate-to: calc(var(--progress) - var(--offset));
+    position: absolute;
+    /* left: 0;
+    top: 0; */
+
+    transform: translate(-50%, -50%);
+    offset-path: path(var(--offset-path)); /* inline variable by JS; */
+
+    offset-distance: calc(var(--old-progress) - var(--offset));
+    /* https://cubic-bezier.com/#.6,0,.5,1.09 */
+
+    animation: move 2500ms forwards cubic-bezier(0.9, 0, 0.5, 1.1);
+    animation-delay: calc(var(--place) * 0.25s);
+    width: var(--size);
+    height: auto;
+}
+.delayed1 {
+    --place: 1;
+}
+.delayed2 {
+    --place: 2;
+}
+.delayed3 {
+    --place: 3;
+}
+.delayed4 {
+    --place: 4;
+}
+.delayed5 {
+    --place: 5;
+}
+.delayed6 {
+    --place: 6;
+}
+.delayed7 {
+    --place: 7;
+}
+.delayed8 {
+    --place: 8;
+}
+.delayed9 {
+    --place: 9;
+}
+.delayed10 {
+    --place: 10;
+}
+@keyframes move {
+    from {
+        offset-distance: var(--animate-from);
+    }
+    to {
+        offset-distance: var(--animate-to);
+    }
+}
+.coaster.free-fall {
+    animation: free-fall 2s cubic-bezier(0.4, 0, 1, 1);
+    animation-fill-mode: both;
+    offset-path: none;
+    transform: rotate(0deg);
+    animation-delay: calc(var(--place) * 0.1s);
+}
+@keyframes free-fall {
+    to {
+        top: 150%;
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-height: 700px) and (orientation: landscape) {
+    #modal #settings {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    #modal #settings > * {
+        width: 100%;
+    }
+}
